@@ -48,4 +48,10 @@ public final class Variable implements ContractInterface {
         String x = stub.getStringState("x");
         return x;
     }
+
+    @Transaction()
+    public byte[] who(final Context ctx) {
+        ChaincodeStub stub = ctx.getStub();
+        return stub.getCreator();
+    }
 }
