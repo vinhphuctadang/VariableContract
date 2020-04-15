@@ -6,7 +6,7 @@ package org.hyperledger.fabric.samples.variable;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.commons.codec.binary.Base64;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contact;
@@ -25,6 +25,19 @@ import com.owlike.genson.Genson;
 /**
  * Java implementation Variable set-get
  */
+ @Contract(
+         name = "Variable",
+         info = @Info(
+                 title = "Variable contract",
+                 description = "First example for learning",
+                 version = "0.0.1-SNAPSHOT",
+                 license = @License(
+                         name = "Apache 2.0 License",
+                         url = "http://www.apache.org/licenses/LICENSE-2.0.html"),
+                 contact = @Contact(
+                         email = "f.carr@example.com",
+                         name = "F Carr",
+                         url = "https://hyperledger.example.com")))
 @Default
 public final class Variable implements ContractInterface {
 
@@ -50,8 +63,9 @@ public final class Variable implements ContractInterface {
     }
 
     @Transaction()
-    public byte[] who(final Context ctx) {
+    public String who(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
-        return stub.getCreator();
+        byte[] creator = stub.getCreator();
+        return new String(Base64.encodeBase64(creator));
     }
 }
