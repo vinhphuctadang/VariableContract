@@ -19,7 +19,7 @@ import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
-
+import java.util.Random;
 import com.owlike.genson.Genson;
 
 /**
@@ -42,7 +42,7 @@ import com.owlike.genson.Genson;
 public final class Variable implements ContractInterface {
 
     private final Genson genson = new Genson();
-
+    private final Random random = new Random();
     @Transaction()
     public void initLedger(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
@@ -50,9 +50,10 @@ public final class Variable implements ContractInterface {
     }
 
     @Transaction()
-    public void set(final Context ctx, final String value) {
+    public void set(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
-        stub.putStringState("x", value);
+        int x = random.nextInt(3)+1;
+        stub.putStringState("x", x+"");
     }
 
     @Transaction()
